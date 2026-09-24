@@ -16,7 +16,7 @@ jq --version
 
 echo ""
 echo "--- Fetching a sample JSON with curl + jq ---"
-curl -s https://api.github.com/repos/docker/docker | jq '{name, description, stargazers_count}'
+curl -sL https://api.github.com/repos/moby/moby | jq '{name, description, stargazers_count}'
 
 echo ""
 echo "===== Done ====="
