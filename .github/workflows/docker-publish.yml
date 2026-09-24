@@ -49,11 +49,25 @@ jobs:
             type=semver,pattern={{version}}
             type=sha
 
+      - name: Build image for smoke test
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          load: true
+          tags: docker-demo:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Smoke test
+        run: docker run --rm docker-demo:test
+
       - name: Build and push image
         uses: docker/build-push-action@v6
         with:
           context: .
           platforms: linux/amd64,linux/arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
